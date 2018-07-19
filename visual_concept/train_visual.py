@@ -93,29 +93,20 @@ def main(args):
     total_step = len(data_loader)
     for epoch in range(args.num_epochs):
         for i, (images, targets,lengths) in enumerate(data_loader):
-            #lengths=torch.Tensor(lengths) 
-            #print('lengths',lengths.size())
             # Set mini-batch dataset
             images = images.cuda()
             #print('targets',targets.size())
             targets = targets.cuda()
             
             #targets = pack_padded_sequence(captions, lengths, batch_first=True)[0]
-            #print('index',index)
-            #print('length',length)
+     
             # Forward, backward and optimize
             features = encoder(images)
             outputs = decoder(features)
-            #print('outputs',outputs.size())
+           
             #outputs = pack_padded_sequence(outputs, lengths, batch_first=True)[0]
             #loss = criterion(outputs, targets,lengths).mean()
-            #print('loss',loss)
-            #print('max_outputs',torch.max(outputs))
-            #print('max_targets',torch.max(targets))
-            #print('max_pos',outputs*targets)
-            #print('min_pos',outputs*targets)
-            #print('max_neg',outputs*(1-targets)+targets)
-            #print('min_neg',torch.min(outputs*(1-targets)+targets))
+           
 
             #loss=criterion(outputs,targets)
             pos=nn.functional.binary_cross_entropy(outputs*targets,targets)*1e3
