@@ -47,31 +47,21 @@ class DecoderRNN(nn.Module):
         self.att_w = nn.Linear(self.vis_dim,1,bias=False)
 
     def attention(self,features,hiddens):
-        #print('features',features.size())
         att_fea = self.att_vw(features)
-        #print('att_fea',att_fea.size())
         att_h = self.att_hw(hiddens).unsqueeze(1)
-        #print('att_h',att_h.size())
         att_full = nn.ReLU()(att_fea + att_h +self.att_bias.view(1,-1,1))
         att_out = self.att_w(att_full)
-        #print('att_out',att_out.size())
         alpha=nn.Softmax(dim=1)(att_out)
-        #print('alpha',alpha[0])
         context=torch.sum(features*alpha,1)
-        #print('context',context.size())
         return context,alpha
 
     def forward(self, features, captions, lengths):
         """Decode image feature vectors and generates captions."""
         embeddings = self.embed(captions)
-        #print('features',features.size())
         feats=torch.mean(features,1).unsqueeze(1)
-        #print('feats',feats.size())
-        #print('emb',embeddings.size())
         embeddings = torch.cat((feats, embeddings), 1)
         batch_size, time_step = captions.size()
         predicts = to_var(torch.zeros(batch_size, time_step, self.vocab_size))
-        #print('features',features.size())
         #packed = pack_padded_sequence(embeddings, lengths, batch_first=True) 
         hx=to_var(torch.zeros(batch_size, 1024))
         cx=to_var(torch.zeros(batch_size, 1024))
@@ -79,14 +69,12 @@ class DecoderRNN(nn.Module):
             feas,_=self.attention(features,hx)
             input=torch.cat((feas,embeddings[:,i,:]),-1)
             hx,cx = self.lstm_cell(input,(hx,cx))
-            #different
             output = self.linear(hx)
             predicts[:,i,:]=output
         return predicts
     
     def sample(self, features, states=None):
         """Generate captions for given image features using greedy search."""
-        #print('features',features.size())
         sampled_ids = []
         hx=to_var(torch.zeros(1,1024))
         cx=to_var(torch.zeros(1,1024))
@@ -95,14 +83,11 @@ class DecoderRNN(nn.Module):
         for i in range(self.max_seg_length):
             feas,alpha=self.attention(features,hx)
             alphas.append(alpha)
-            #print('inputs',inputs.size())
-            #print('feas',feas.size())
             inputs=torch.cat((feas,inputs),-1)
             hx, cx = self.lstm_cell(inputs,(hx,cx))          # hiddens: (batch_size, 1, hidden_size)
             outputs = self.linear(hx.squeeze(1))            # outputs:  (batch_size, vocab_size)
             _, predicted = outputs.max(1)                        # predicted: (batch_size)
             sampled_ids.append(predicted)
             inputs = self.embed(predicted)                       # inputs: (batch_size, embed_size)
-            #inputs = inputs.unsqueeze(1)                         # inputs: (batch_size, 1, embed_size)
         sampled_ids = torch.stack(sampled_ids, 1)                # sampled_ids: (batch_size, max_seq_length)
         return sampled_ids,alphas
