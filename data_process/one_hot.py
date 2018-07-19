@@ -6,7 +6,6 @@ import json
 
 with open('data/zh_vocab.pkl','rb') as f:
     vocab=pickle.load(f)
-#print(vocab.word2idx['皮带'])
 
 
 f_img=open('data/annotations/img_tag.txt','r')
@@ -21,7 +20,6 @@ for line in f_img:
             l[j]=vocab.word2idx[tokens[j]]
         except:
             pass
-    #print(sum(l))
     x=[id,l,len(tokens)]
     f_save.write('%s\n'%json.dumps(x))
 f_img.close()
