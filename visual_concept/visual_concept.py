@@ -37,11 +37,9 @@ class Decoder(nn.Module):
         conv2=self.conv2(relu1)
         relu2=self.relu2(conv2)
         conv3=self.conv3(relu2)
-        #relu4=self.relu4(conv4)
-        #print('conv3',conv3.size())
+
         sigmoid=self.sigmoid(conv3)
         pool=self.pool_mil(sigmoid)
-        #print('pool',pool.size())
         x=pool.squeeze(2).squeeze(2)
         x1 = torch.add(torch.mul(sigmoid.view(x.size(0), 1032, -1), -1), 1)
         cumprod=torch.prod(x1,2)
