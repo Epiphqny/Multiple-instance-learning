@@ -23,16 +23,10 @@ class Sample_loss(torch.nn.Module):
          loss=0
          batch_size=len(lengths)//8
          for i in range(batch_size):
-              print('x[i]',x[i])
               label_index=y[i][:lengths[i]]
-              print('label_index',label_index)
-              for label in label_index:
-                  print('x',x[i][label])
               values=1-x[i][label_index]
-              print('values',values)
               prod=1
               for value in values:
-                  print('value',value)
                   prod=prod*value
               print('prod',prod)
               loss+=1-prod
@@ -45,7 +39,6 @@ class bce_loss(torch.nn.Module):
 
     def forward(self,x,y):
          loss=F.binary_cross_entropy(x,y)
-         print('loss',loss)
          loss=Variable(loss.cuda(), requires_grad=True)
          return loss
 
@@ -77,16 +70,8 @@ def main(args):
     # Build the models
     encoder = nn.DataParallel(EncoderCNN()).cuda()
     decoder = nn.DataParallel(Decoder()).cuda()
-    #encoder=EncoderCNN().cuda()
-    #decoder=Decoder().cuda()
-    #encoder.load_state_dict(torch.load("models/encoder-2-1000.ckpt"))
-    #decoder.load_state_dict(torch.load("models/decoder-2-1000.ckpt")) 
-
     
-    # Loss and optimizer
-    #criterion = bce_loss().cuda()
-    #criterion=nn.MultiLabelSoftMarginLoss()
-    params = list(decoder.parameters())# + list(encoder.linear.parameters()) + list(encoder.bn.parameters())
+    params = list(decoder.parameters())
     optimizer = torch.optim.Adam(params, lr=args.learning_rate)
     time_start=time.time() 
     # Train the models
@@ -95,7 +80,6 @@ def main(args):
         for i, (images, targets,lengths) in enumerate(data_loader):
             # Set mini-batch dataset
             images = images.cuda()
-            #print('targets',targets.size())
             targets = targets.cuda()
             
             #targets = pack_padded_sequence(captions, lengths, batch_first=True)[0]
@@ -104,15 +88,9 @@ def main(args):
             features = encoder(images)
             outputs = decoder(features)
            
-            #outputs = pack_padded_sequence(outputs, lengths, batch_first=True)[0]
-            #loss = criterion(outputs, targets,lengths).mean()
-           
-
-            #loss=criterion(outputs,targets)
             pos=nn.functional.binary_cross_entropy(outputs*targets,targets)*1e3
             neg=nn.functional.binary_cross_entropy(outputs*(1-targets)+targets,targets)*1
-            print('pos',pos)
-            print('neg',neg)
+         
             loss=pos+neg
             decoder.zero_grad()
             encoder.zero_grad()
