@@ -1,6 +1,8 @@
 # Multiple-instance-learning
 
-三种多示例学习方法实现，用于广告图像的多标签，其中 visual_concept效果最好
+Pytorch implementation of three Multiple Instance Learning / Multi-classification papers
+
+三种多示例学习方法实现，用于图像的多标签，其中 visual_concept效果最好
 
 * data_process: 构造词汇数据词典，三个方法均通用
 * CNN-RNN: A Unified Framework for Multi-label Image Classification https://arxiv.org/abs/1604.04573
