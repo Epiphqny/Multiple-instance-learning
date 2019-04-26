@@ -1,6 +1,6 @@
 # Multiple-instance-learning
 
-Pytorch implementation of three Multiple Instance Learning / Multi-classification papers
+Pytorch implementation of three Multiple Instance Learning or Multi-classification papers
 
 三种多示例学习方法实现，用于图像的多标签，其中 visual_concept效果最好
 
