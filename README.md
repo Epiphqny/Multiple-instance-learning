@@ -13,7 +13,7 @@ Pytorch implementation of three Multiple Instance Learning or Multi-classificati
 
 We will not provide the original dataset, but you can build it using your own dataset. Among them, **resized2014** is image dataset, **img_tag.txt** is the mapping dict file of image to tags, having that, you can generate the **zh_vocab.pkl** vocabulary file using https://github.com/Epiphqny/Multiple-instance-learning/blob/master/data_process/build_vocab.py
 
-### Example
+### Examples
 
 img_tag.txt(with number id represent different image name):
 
@@ -25,7 +25,7 @@ img_tag.txt(with number id represent different image name):
 
 ...
 
-zh_vocab.pkl
+zh_vocab.pkl:
 
 self.idx2word={1:girl,2:bottle,3:boy,4:car...}
 
