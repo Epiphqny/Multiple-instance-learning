@@ -31,4 +31,4 @@ self.idx2word={1:girl,2:bottle,3:boy,4:car...}
 
 self.word2idx={girl:1,bottle:2,boy:3,car:4...}
 
-
+Just an example, the realization may have some variation, the lines in the text file are in json format.
