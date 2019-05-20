@@ -8,3 +8,7 @@ Pytorch implementation of three Multiple Instance Learning or Multi-classificati
 * CNN-RNN: A Unified Framework for Multi-label Image Classification https://arxiv.org/abs/1604.04573
 * Visual_concept: From captions to visual concepts and back https://arxiv.org/abs/1411.4952?context=cs 
 * DeepMIML: https://cs.nju.edu.cn/zhouzh/zhouzh.files/publication/aaai17deepMIML.pdf
+
+## Data prepare
+
+We will not provide the original dataset, but you can build it using your own dataset. Among them, **resized2014** is image dataset, **img_tag.txt** is the mapping dict file of image to tags, having that, you can generate the **zh_voacb.pkl** vocabulary file using https://github.com/Epiphqny/Multiple-instance-learning/blob/master/data_process/build_vocab.py
