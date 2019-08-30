@@ -1,10 +1,10 @@
 # Multiple-instance-learning
 
-Pytorch implementation of three Multiple Instance Learning or Multi-classification papers
+Pytorch implementation of three Multiple Instance Learning or Multi-classification papers, the performace of the visual_concept method is the best.
 
 三种多示例学习方法实现，用于图像的多标签，其中 visual_concept效果最好
 
-* data_process: 构造词汇数据词典，三个方法均通用
+* data_process: vocabulary id dict construction file, used by the three methods.构造词汇数据词典，三个方法均通用
 * CNN-RNN: A Unified Framework for Multi-label Image Classification https://arxiv.org/abs/1604.04573
 * Visual_concept: From captions to visual concepts and back https://arxiv.org/abs/1411.4952?context=cs 
 * DeepMIML: https://cs.nju.edu.cn/zhouzh/zhouzh.files/publication/aaai17deepMIML.pdf
